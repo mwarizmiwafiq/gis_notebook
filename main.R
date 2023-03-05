@@ -1,6 +1,8 @@
 library(sf)
 library(tigris)
 library(tidyverse)
+library(stars)
+library(units)
 
 data <- st_read("data/kontur_jabodetabek_pop_2022.gpkg")
   
@@ -28,7 +30,7 @@ bottom_right <- st_point(c(bb[["xmax"]], bb[["ymin"]])) |>
 data |> 
   ggplot() +
   geom_sf() +
-  geom_sf(data = bottom_left) +
+  geom_sf(data = bottom_left, color = "blue") +
   geom_sf(data = bottom_right, color = "red")
 
 width <- st_distance(bottom_left, bottom_right)
@@ -44,7 +46,18 @@ if (width > height) {
   w_ratio <- 1
   h_ratio <- height / width
 } else {
-  h_ration <- 1
+  h_ratio <- 1
   w_ratio <- width / height
 }
+
+
+size <- 5000
+
+nx1 <- as.numeric( floor(size * w_ratio))
+ny2 <- floor(size * h_ratio)
+
+jbdt_rast <- st_rasterize(data,
+                          nx = nx1,
+                          ny = ny2)
+
 
