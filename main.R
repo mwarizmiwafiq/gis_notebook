@@ -3,6 +3,7 @@ library(tigris)
 library(tidyverse)
 library(stars)
 library(units)
+library(rayshader)
 
 data <- st_read("data/kontur_jabodetabek_pop_2022.gpkg")
   
@@ -51,13 +52,25 @@ if (width > height) {
 }
 
 
-size <- 5000
+size <- 1000
 
 nx1 <- as.numeric( floor(size * w_ratio))
-ny2 <- floor(size * h_ratio)
+ny1 <- floor(size * h_ratio)
 
 jbdt_rast <- st_rasterize(data,
                           nx = nx1,
-                          ny = ny2)
+                          ny = ny1)
 
+matr <- matrix(jbdt_rast$population,
+               nrow = floor(size * w_ratio),
+               ncol = floor(size * h_ratio))
+plot(jbdt_rast)
+#PLOT 3D MAP
+
+matr |>
+  height_shade() |>
+  plot_3d(heightmap = matr,
+          zscale = 1000,
+          solid = FALSE,
+          shadowdepth = 0)
 
