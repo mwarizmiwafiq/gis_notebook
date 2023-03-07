@@ -4,17 +4,11 @@ library(tidyverse)
 library(stars)
 library(units)
 library(rayshader)
+library(MetBrewer)
+library(colorspace)
 
 data <- st_read("data/kontur_jabodetabek_pop_2022.gpkg")
   
-st <- states()
-
-florida <- st |>
-  filter(NAME == "Florida")
-
-florida |>
-  ggplot() +
-  geom_sf()
 
 # define aspect ration based on bounding box
 
@@ -52,7 +46,7 @@ if (width > height) {
 }
 
 
-size <- 1000
+size <- 2000
 
 nx1 <- as.numeric( floor(size * w_ratio))
 ny1 <- floor(size * h_ratio)
@@ -64,13 +58,18 @@ jbdt_rast <- st_rasterize(data,
 matr <- matrix(jbdt_rast$population,
                nrow = floor(size * w_ratio),
                ncol = floor(size * h_ratio))
+
 plot(jbdt_rast)
+
+#create color
+
+
 #PLOT 3D MAP
 
 matr |>
   height_shade() |>
   plot_3d(heightmap = matr,
-          zscale = 1000,
+          zscale = 150,
           solid = FALSE,
           shadowdepth = 0)
 
