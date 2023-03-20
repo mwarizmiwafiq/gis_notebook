@@ -62,14 +62,48 @@ matr <- matrix(jbdt_rast$population,
 plot(jbdt_rast)
 
 #create color
+cl <- met.brewer("Hokusai2")
+swatchplot(cl)
+
+texture2 <- grDevices::colorRampPalette(cl)(256)
+swatchplot(texture)
 
 
 #PLOT 3D MAP
 
 matr |>
-  height_shade() |>
+  height_shade(texture = texture2) |>
   plot_3d(heightmap = matr,
           zscale = 150,
           solid = FALSE,
           shadowdepth = 0)
+
+render_camera(theta = 145, phi = 36, zoom = 0.7)
+
+outfile <- "images/final_plot.png"
+
+{
+  start_time <- Sys.time()
+  cat(crayon::cyan(start_time), "\n")
+  if (!file.exists(outfile)) {
+    png::writePNG(matrix(1), target = outfile)
+  }
+  render_highquality(
+    filename = outfile,
+    interactive = FALSE,
+    lightdirection = 280,
+    lightaltitude = c(20, 80),
+    lightintensity = c(600, 100),
+    samples = 450,
+    width = 6000,
+    height = 6000
+  )
+  end_time <- Sys.time()
+  diff <- end_time - start_time
+  cat(crayon::cyan(diff), "\n")
+}
+
+
+
+
 
