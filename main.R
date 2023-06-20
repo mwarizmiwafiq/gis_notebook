@@ -74,7 +74,7 @@ swatchplot(texture)
 matr |>
   height_shade(texture = texture2) |>
   plot_3d(heightmap = matr,
-          zscale = 150,
+          zscale = 100,
           solid = FALSE,
           shadowdepth = 0)
 
@@ -91,12 +91,12 @@ outfile <- "images/final_plot.png"
   render_highquality(
     filename = outfile,
     interactive = FALSE,
-    lightdirection = 280,
-    lightaltitude = c(20, 80),
-    lightintensity = c(600, 100),
-    samples = 450,
-    width = 6000,
-    height = 6000
+    lightdirection = 75,
+    lightaltitude = c(20, 180),
+    lightintensity = c(1000, 1000),
+    samples = 150,
+    width = 600,
+    height = 600
   )
   end_time <- Sys.time()
   diff <- end_time - start_time
