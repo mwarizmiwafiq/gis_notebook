@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  gis_notebook:
+    build:
+      context: ../.
+      dockerfile: ./docker/Dockerfile
+    working_dir: /home
+    volumes:
+      - .././:/home/:rw
+    tty: true
+    ports:
+      - "8888:8888"
