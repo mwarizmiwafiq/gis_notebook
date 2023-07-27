@@ -1,10 +1,12 @@
-FROM jupyter/tensorflow-notebook:python-3.11.4
+# FROM jupyter/tensorflow-notebook:python-3.11.4
+FROM tensorflow/tensorflow:latest-gpu-jupyter
 
 # Define environment variable
 ENV CPLUS_INCLUDE_PATH=/usr/include/gdal
 ENV C_INCLUDE_PATH=/usr/include/gdal
 
 USER root
+WORKDIR /home
 
 # Update and install dependencies
 RUN apt-get update -y && \
@@ -25,7 +27,12 @@ RUN apt-get update && apt-get install -y curl gnupg && \
 # Install other Python packages
 RUN pip install rasterio fiona shapely geopandas
 RUN pip install earthengine-api
-RUN pip install GDAL==$(gdal-config --version | awk -F'[.]' '{print $1"."$2}')
+# RUN pip install GDAL==$(gdal-config --version | awk -F'[.]' '{print $1"."$2}')
 RUN pip install retrying
 RUN pip install rio-cogeo
 RUN pip install tqdm
+RUN pip install jupyterlab
+RUN pip install pandas
+RUN pip install matplotlib
+
+ENTRYPOINT ["jupyter", "lab","--ip=0.0.0.0","--allow-root","--no-browser"]
