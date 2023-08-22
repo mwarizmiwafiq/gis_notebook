@@ -2,3 +2,11 @@
 .Rhistory
 .RData
 .Ruserdata
+.crendentials
+.ipynb_checkpoints
+.Rproj.user
+.RData
+.Rhistory
+.credentials
+python-docs-samples/
+output/
